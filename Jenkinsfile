@@ -5,10 +5,11 @@ node('linux'){
     }
     
     stage('Unit Tests'){
-        sh "ant -buildfile test.xml"
+        sh "ant -f test.xml -v"
+        junit 'reports/result.xml'
     }
     
     stage('Report'){
-        junit 'reports/*.xml'
+        sh "aws cloudformation describe-stack-resources --region us-east-1 --stack-name jenkins"
     }
 }
